@@ -26,10 +26,10 @@ func TestObjectTextures(t *testing.T) {
 
 	tm := &timeMock{}
 	tm.setTime(10, 10)
-	SetTexture(obj, TextureType(7), c)
+	SetTexture(obj, testTexture(7), c)
 	tex, ok = GetTexture(obj)
 	assert.True(t, ok)
-	assert.Equal(t, TextureType(7), tex)
+	assert.Equal(t, testTexture(7), tex)
 	assert.True(t, IsValid(tex))
 
 	visited := 0
@@ -49,8 +49,8 @@ func TestObjectTextures(t *testing.T) {
 	assert.False(t, ok)
 	assert.Equal(t, NoTexture, tex)
 
-	SetTexture(obj, TextureType(1), c)
-	SetTexture(otherObj, TextureType(2), other)
+	SetTexture(obj, testTexture(1), c)
+	SetTexture(otherObj, testTexture(2), other)
 	tm.now = tm.now.Add(ValidDuration + time.Second)
 
 	expired := 0
@@ -88,12 +88,12 @@ func TestTextTextures(t *testing.T) {
 	assert.Equal(t, NoTexture, tex)
 
 	freed := 0
-	SetTextTexture(ent, TextureType(3), c, func() { freed++ })
-	SetTextTexture(otherEnt, TextureType(4), other, func() { freed++ })
+	SetTextTexture(ent, testTexture(3), c, func() { freed++ })
+	SetTextTexture(otherEnt, testTexture(4), other, func() { freed++ })
 
 	tex, ok = GetTextTexture(ent)
 	assert.True(t, ok)
-	assert.Equal(t, TextureType(3), tex)
+	assert.Equal(t, testTexture(3), tex)
 
 	DeleteTextTexturesFor(c)
 	assert.Equal(t, 1, freed)
@@ -104,7 +104,7 @@ func TestTextTextures(t *testing.T) {
 
 	tm := &timeMock{}
 	tm.setTime(10, 10)
-	SetTextTexture(ent, TextureType(5), c, func() { freed++ })
+	SetTextTexture(ent, testTexture(5), c, func() { freed++ })
 	tm.now = tm.now.Add(ValidDuration + time.Second)
 	RangeExpiredTexturesFor(c, func(_ fyne.CanvasObject) {})
 	assert.Equal(t, 2, freed)
